@@ -24,10 +24,10 @@ class hkButtonMqtt:
         self.check_args(sys.argv)
 
         try:
-            client = mqtt.Client()
+            __HK_MQTT_CLIENT = mqtt.Client()
 
-            client.username_pw_set(username=self.__hk_username, password=self.__hk_password)
-            client.connect(self.__hk_host, int(self.__hk_port), 60)
+            __HK_MQTT_CLIENT.username_pw_set(username=self.__hk_username, password=self.__hk_password)
+            __HK_MQTT_CLIENT.connect(self.__hk_host, int(self.__hk_port), 60)
         except:
             print("Could not set up MQTT client", sys.exc_info()[0])
             exit(1)
@@ -39,7 +39,7 @@ class hkButtonMqtt:
         config = {button: (self.callback, True)}
 
         # generate button handler
-        button_handler = hkButtonHandler(config)
+        __HK_BUTTON_HANDLER = hkButtonHandler(config)
 
         # get start time
         start_time = time.perf_counter() * 1000.0
@@ -47,7 +47,7 @@ class hkButtonMqtt:
             print("Press CTRL+C to exit")
             # check inputs
             while True:
-                button_handler.check_inputs()
+                __HK_BUTTON_HANDLER.check_inputs()
                 time.sleep(0.05 - ((time.perf_counter() - start_time) % 0.05))
 
         except KeyboardInterrupt:
