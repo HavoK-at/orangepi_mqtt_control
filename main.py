@@ -4,6 +4,10 @@ from pyA20.gpio import port
 from hkbuttonhandler import *
 import time
 
+
+def callback(values):
+    print("CALLED BY", values[hkButtonEnum.HK_GPIO])
+
 # Check if root cause we need root for access to the pins
 if not os.getegid() == 0:
     sys.exit('Script must be run as root')
@@ -12,7 +16,7 @@ if not os.getegid() == 0:
 button = port.PA11
 
 # init the gpio pins
-myDict = {button: (callable, False)}
+myDict = {button: (callback, False)}
 
 # generate button handler
 button_handler = hkButtonHandler(myDict)
@@ -30,5 +34,3 @@ except KeyboardInterrupt:
     print("Exiting")
 
 
-def callback(values):
-    print("CALLED BY", values[hkButtonEnum.HK_GPIO])
