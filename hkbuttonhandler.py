@@ -47,12 +47,14 @@ class hkButtonHandler:
             # get button state
             got_pressed = gpio.input(key) == 0
 
+            # button is not pressed but was pressed
             if (not got_pressed) and was_pressed:
                 values[hkButtonEnum.HK_STATE_PRESSED] = False
+            # button is pressed and was pressed -> stage 2 dimm
             elif got_pressed and was_pressed:
                 pass
+            # button is pressed but was not pressed -> call function
             elif got_pressed and (not was_pressed):
-                print("calling")
                 values[hkButtonEnum.HK_STATE_PRESSED] = True
                 values[hkButtonEnum.HK_CALLBACK](values)
             else:
