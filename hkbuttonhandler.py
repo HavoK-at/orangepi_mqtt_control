@@ -40,7 +40,7 @@ class hkButtonHandler:
         func, dim = gpio_tuple
         self.__HK_PIN_LIST[gpio_key] = {
             hkButtonEnum.HK_GPIO: gpio_key,
-            hkButtonEnum.HK_CALLBACK_: func,
+            hkButtonEnum.HK_CALLBACK: func,
             hkButtonEnum.HK_DIM: dim,
             hkButtonEnum.HK_STATE_PRESSED: False,
             hkButtonEnum.HK_OUTPUT_SET: 0,

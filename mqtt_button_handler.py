@@ -59,7 +59,6 @@ class hkButtonMqtt:
             self.usage()
             exit(1)
 
-        print(argv)
         self.__hk_host = argv[1]
         self.__hk_port = argv[2]
         self.__hk_username = argv[3]
