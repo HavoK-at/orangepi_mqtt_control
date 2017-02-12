@@ -16,7 +16,7 @@ class hkButtonMqtt:
     __hk_username = None
     __hk_port = None
     __hk_heartbeat_count = 0
-    __hk_heartbeat_on = 100
+    __hk_heartbeat_on = 600
 
     def main(self):
         # Check if root cause we need root for access to the pins
