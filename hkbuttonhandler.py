@@ -28,24 +28,25 @@ class hkButtonHandler:
     __HK_DIM_RATE_PER_CYCLE = 3
     __HK_PIN_LIST = {}
 
-    def __init__(self, input_list):
+    def __init__(self, input_dict):
         gpio.init()
-        for key in input_list:
-            tup = input_list[key]
+        for key in input_dict:
+            tup = input_dict[key]
             gpio.setcfg(key, gpio.INPUT)
             gpio.pullup(key, gpio.PULLUP)
             self.__hk_add_to_dict(key, tup)
 
     def __hk_add_to_dict(self, gpio_key, gpio_tuple):
         func, dim = gpio_tuple
-        self.__HK_PIN_LIST[gpio_key] = {}
-        self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_GPIO] = gpio_key
-        self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_CALLBACK] = func
-        self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_DIM] = dim
-        self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_STATE_PRESSED] = False
-        self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_OUTPUT_SET] = 0
-        self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_PRESSED_SINCE] = 0
-        self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_DIM_DOWN] = False
+        self.__HK_PIN_LIST[gpio_key] = {
+            hkButtonEnum.HK_GPIO: gpio_key,
+            hkButtonEnum.HK_CALLBACK_: func,
+            hkButtonEnum.HK_DIM: dim,
+            hkButtonEnum.HK_STATE_PRESSED: False,
+            hkButtonEnum.HK_OUTPUT_SET: 0,
+            hkButtonEnum.HK_PRESSED_SINCE: 0,
+            hkButtonEnum.HK_DIM_DOWN: False
+        }
 
     def __hk_call_back(self, key):
         values = self.__HK_PIN_LIST[key]
