@@ -52,6 +52,7 @@ class hkButtonHandler:
             elif got_pressed and was_pressed:
                 pass
             elif got_pressed and (not was_pressed):
+                print("calling")
                 values[hkButtonEnum.HK_STATE_PRESSED] = True
                 values[hkButtonEnum.HK_CALLBACK](values)
             else:
