@@ -21,7 +21,8 @@ class hkButtonHandler:
 
     def __init__(self, input_list):
         gpio.init()
-        for key, tup in self.__HK_PIN_LIST:
+        for key in input_list:
+            tup = input_list[key]
             gpio.setcfg(key, gpio.INPUT)
             gpio.pullup(key, gpio.PULLUP)
             self.__hk_add_to_dict(key, tup)
@@ -36,5 +37,6 @@ class hkButtonHandler:
         self.__HK_PIN_LIST[gpio_key][self.__HK_OUTPUT_SET] = 0
 
     def check_inputs(self):
-        for key, values in self.__HK_PIN_LIST:
+        for key in self.__HK_PIN_LIST:
+            values = self.__HK_PIN_LIST[key]
             print(key, values)
