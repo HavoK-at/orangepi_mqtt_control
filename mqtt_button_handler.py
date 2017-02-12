@@ -15,6 +15,8 @@ class hkButtonMqtt:
     __hk_password = None
     __hk_username = None
     __hk_port = None
+    __hk_heartbeat_count = 0
+    __hk_heartbeat_on = 100
 
     def main(self):
         # Check if root cause we need root for access to the pins
@@ -50,6 +52,9 @@ class hkButtonMqtt:
                 self.__HK_BUTTON_HANDLER.check_inputs()
                 time.sleep(0.05 - ((time.perf_counter() - start_time) % 0.05))
 
+                # heartbeat for mqtt
+                self.heart_beat()
+
         except KeyboardInterrupt:
             print("Exiting")
 
@@ -68,6 +73,12 @@ class hkButtonMqtt:
         print("CALLED BY", values[hkButtonEnum.HK_GPIO],
               values[hkButtonEnum.HK_OUTPUT_SET])
         self.__HK_MQTT_CLIENT.publish("cmnd/pi/button1", payload=values[hkButtonEnum.HK_OUTPUT_SET])
+
+    def heart_beat(self):
+        if self.__hk_heartbeat_count == self.__hk_heartbeat_on:
+            self.__hk_heartbeat_count = 0
+            self.__HK_MQTT_CLIENT.publish("status/pi/heartbeat")
+        self.__hk_heartbeat_count += 1
 
     @staticmethod
     def usage():
