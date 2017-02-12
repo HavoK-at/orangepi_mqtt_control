@@ -16,7 +16,6 @@ class hkButtonEnum(Enum):
     HK_DIM = "dim"
     HK_STATE_PRESSED = "state_pressed"
     HK_OUTPUT_SET = "output_set"
-    HK_BUTTON_PRESSED = 0           # state if button has been pressed, 0 as pull to ground
 
 class hkButtonHandler:
 
@@ -46,7 +45,7 @@ class hkButtonHandler:
             was_pressed = values[hkButtonEnum.HK_STATE_PRESSED]
 
             # get button state
-            got_pressed = gpio.input(key) == hkButtonEnum.HK_BUTTON_PRESSED
+            got_pressed = gpio.input(key) == 0
 
             if (not got_pressed) and was_pressed:
                 values[hkButtonEnum.HK_STATE_PRESSED] = False
