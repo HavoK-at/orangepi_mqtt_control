@@ -82,7 +82,7 @@ class hkButtonMqtt:
 
     @staticmethod
     def usage():
-        print("Usage: sudo python3 mqtt_button_handler.py <host> <port> <username> <password>")
+        print("Usage: sudo python3 hkbuttonmqtt.py <host> <port> <username> <password>")
 
 if __name__ == "__main__":
     program = hkButtonMqtt()

@@ -104,6 +104,3 @@ class hkButtonHandler:
             # button is pressed but was not pressed -> call function
             elif got_pressed and (not was_pressed):
                 values[hkButtonEnum.HK_STATE_PRESSED] = True
-
-            else:
-                pass
