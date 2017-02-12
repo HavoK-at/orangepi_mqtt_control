@@ -1,8 +1,9 @@
 import os
 import sys
 from pyA20.gpio import port
-from hkbuttonhandler import hkButtonHandler
+from hkbuttonhandler import *
 import time
+
 # Check if root cause we need root for access to the pins
 if not os.getegid() == 0:
     sys.exit('Script must be run as root')
@@ -29,5 +30,5 @@ except KeyboardInterrupt:
     print("Exiting")
 
 
-def callback():
-    pass
+def callback(values):
+    print("CALLED BY", values[hkButtonEnum.HK_GPIO])
