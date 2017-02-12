@@ -46,7 +46,7 @@ class hkButtonHandler:
             was_pressed = values[hkButtonEnum.HK_STATE_PRESSED]
 
             # get button state
-            got_pressed = gpio.input(key) == hkButtonEnum.HK_STATE_PRESSED
+            got_pressed = gpio.input(key) == hkButtonEnum.HK_BUTTON_PRESSED
 
             if (not got_pressed) and was_pressed:
                 values[hkButtonEnum.HK_STATE_PRESSED] = False
