@@ -58,9 +58,9 @@ class hkButtonHandler:
 
                 # if longpress and value was not 100, set to hundred
                 # else turn to 0
-                if was_long_press and (values[hkButtonEnum.HK_OUTPUT_SET] < 100):
+                if (not was_long_press) and (values[hkButtonEnum.HK_OUTPUT_SET] < 100):
                     values[hkButtonEnum.HK_OUTPUT_SET] = 100
-                else:
+                elif not was_long_press:
                     values[hkButtonEnum.HK_OUTPUT_SET] = 0
                 # send callback
 
