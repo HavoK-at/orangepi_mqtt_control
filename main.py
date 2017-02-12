@@ -6,7 +6,9 @@ import time
 
 
 def callback(values):
-    print("CALLED BY", values[hkButtonEnum.HK_GPIO])
+    print("CALLED BY",
+          values[hkButtonEnum.HK_GPIO],
+          values[hkButtonEnum.HK_OUTPUT_SET])
 
 # Check if root cause we need root for access to the pins
 if not os.getegid() == 0:
@@ -32,5 +34,3 @@ try:
 
 except KeyboardInterrupt:
     print("Exiting")
-
-
