@@ -47,6 +47,15 @@ class hkButtonHandler:
         self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_PRESSED_SINCE] = 0
         self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_DIM_DOWN] = False
 
+    def __hk_call_back(self, key):
+        values = self.__HK_PIN_LIST[key]
+        # check boundaries
+        if values[hkButtonEnum.HK_OUTPUT_SET] < 0:
+            values[hkButtonEnum.HK_OUTPUT_SET] = 0
+        elif values[hkButtonEnum.HK_OUTPUT_SET] > 100:
+            values[hkButtonEnum.HK_OUTPUT_SET] = 100
+        values[hkButtonEnum.HK_CALLBACK](values)
+
     def check_inputs(self):
         for key in self.__HK_PIN_LIST:
             values = self.__HK_PIN_LIST[key]
@@ -70,15 +79,8 @@ class hkButtonHandler:
                     values[hkButtonEnum.HK_OUTPUT_SET] = 0
                     values[hkButtonEnum.HK_DIM_DOWN] = False
                 # send callback
-
-                # check boundaries
-                if values[hkButtonEnum.HK_OUTPUT_SET] < 0:
-                    values[hkButtonEnum.HK_OUTPUT_SET] = 0
-                elif values[hkButtonEnum.HK_OUTPUT_SET] > 100:
-                    values[hkButtonEnum.HK_OUTPUT_SET] = 100
-
+                self.__hk_call_back(key)
                 # call function and reset states
-                values[hkButtonEnum.HK_CALLBACK](values)
                 values[hkButtonEnum.HK_PRESSED_SINCE] = 0
                 values[hkButtonEnum.HK_STATE_PRESSED] = False
 
@@ -91,10 +93,10 @@ class hkButtonHandler:
 
                     if values[hkButtonEnum.HK_DIM_DOWN] and values[hkButtonEnum.HK_OUTPUT_SET] > 0:
                         values[hkButtonEnum.HK_OUTPUT_SET] -= self.__HK_DIM_RATE_PER_CYCLE
-                    elif values[hkButtonEnum.HK_OUTPUT_SET] < 100:
+                    elif (not values[hkButtonEnum.HK_DIM_DOWN]) and values[hkButtonEnum.HK_OUTPUT_SET] < 100:
                         values[hkButtonEnum.HK_OUTPUT_SET] += self.__HK_DIM_RATE_PER_CYCLE
 
-                    values[hkButtonEnum.HK_CALLBACK](values)
+                    self.__hk_call_back(key)
 
                 values[hkButtonEnum.HK_PRESSED_SINCE] += 1
                 pass
