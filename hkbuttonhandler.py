@@ -38,5 +38,8 @@ class hkButtonHandler:
 
     def check_inputs(self):
         for key in self.__HK_PIN_LIST:
+
+            # get button state
+            button_state = gpio.input(key)
+
             values = self.__HK_PIN_LIST[key]
-            print(key, values)

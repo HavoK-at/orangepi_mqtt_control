@@ -1,9 +1,8 @@
 import os
 import sys
-from datetime import datetime
 from pyA20.gpio import port
 from hkbuttonhandler import hkButtonHandler
-
+import time
 # Check if root cause we need root for access to the pins
 if not os.getegid() == 0:
     sys.exit('Script must be run as root')
@@ -14,11 +13,17 @@ button = port.PA11
 # init the gpio pins
 myDict = {button: (callable, False)}
 
+# generate button handler
 button_handler = hkButtonHandler(myDict)
 
+# get start time
+start_time = time.perf_counter() * 1000.0
 try:
     print("Press CTRL+C to exit")
-    button_handler.check_inputs()
+    # check inputs
+    while True:
+        button_handler.check_inputs()
+        time.sleep(0.05 - ((time.perf_counter() - start_time) % 0.05))
 
 except KeyboardInterrupt:
     print("Exiting")
