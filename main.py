@@ -18,7 +18,7 @@ if not os.getegid() == 0:
 button = port.PA11
 
 # init the gpio pins
-myDict = {button: (callback, False)}
+myDict = {button: (callback, True)}
 
 # generate button handler
 button_handler = hkButtonHandler(myDict)
