@@ -133,3 +133,4 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 /function_test.py
+/start.sh
