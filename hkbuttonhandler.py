@@ -64,20 +64,20 @@ class hkButtonHandler:
 
             # button is not pressed but was pressed
             if (not got_pressed) and was_pressed:
-
                 was_long_press = values[hkButtonEnum.HK_PRESSED_SINCE] >= self.__HK_BUTTON_DIM_THRESHOLD
-
-                # default dim down, if output is 0 dim up
-                values[hkButtonEnum.HK_DIM_DOWN] = True
 
                 # if longpress and value was not 100, set to hundred
                 # else turn to 0
                 if (not was_long_press) and (values[hkButtonEnum.HK_OUTPUT_SET] < 100):
                     values[hkButtonEnum.HK_OUTPUT_SET] = 100
-
                 elif not was_long_press:
                     values[hkButtonEnum.HK_OUTPUT_SET] = 0
+
+                if values[hkButtonEnum.HK_OUTPUT_SET] == 0:
                     values[hkButtonEnum.HK_DIM_DOWN] = False
+                else:
+                    values[hkButtonEnum.HK_DIM_DOWN] = True
+
                 # send callback
                 self.__hk_call_back(key)
                 # call function and reset states
@@ -99,7 +99,6 @@ class hkButtonHandler:
                     self.__hk_call_back(key)
 
                 values[hkButtonEnum.HK_PRESSED_SINCE] += 1
-                pass
 
             # button is pressed but was not pressed -> call function
             elif got_pressed and (not was_pressed):
