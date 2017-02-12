@@ -17,6 +17,7 @@ class hkButtonEnum(Enum):
     HK_STATE_PRESSED = "state_pressed"
     HK_OUTPUT_SET = "output_set"
     HK_PRESSED_SINCE = "pressed_since"
+    HK_DIM_DOWN = "dim_down"
 
 
 class hkButtonHandler:
@@ -44,6 +45,7 @@ class hkButtonHandler:
         self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_STATE_PRESSED] = False
         self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_OUTPUT_SET] = 0
         self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_PRESSED_SINCE] = 0
+        self.__HK_PIN_LIST[gpio_key][hkButtonEnum.HK_DIM_DOWN] = False
 
     def check_inputs(self):
         for key in self.__HK_PIN_LIST:
@@ -56,20 +58,26 @@ class hkButtonHandler:
 
                 was_long_press = values[hkButtonEnum.HK_PRESSED_SINCE] >= self.__HK_BUTTON_DIM_THRESHOLD
 
+                # default dim down, if output is 0 dim up
+                values[hkButtonEnum.HK_DIM_DOWN] = True
+
                 # if longpress and value was not 100, set to hundred
                 # else turn to 0
                 if (not was_long_press) and (values[hkButtonEnum.HK_OUTPUT_SET] < 100):
                     values[hkButtonEnum.HK_OUTPUT_SET] = 100
+
                 elif not was_long_press:
                     values[hkButtonEnum.HK_OUTPUT_SET] = 0
+                    values[hkButtonEnum.HK_DIM_DOWN] = False
                 # send callback
 
+                # check boundaries
                 if values[hkButtonEnum.HK_OUTPUT_SET] < 0:
                     values[hkButtonEnum.HK_OUTPUT_SET] = 0
-
-                if values[hkButtonEnum.HK_OUTPUT_SET] > 100:
+                elif values[hkButtonEnum.HK_OUTPUT_SET] > 100:
                     values[hkButtonEnum.HK_OUTPUT_SET] = 100
 
+                # call function and reset states
                 values[hkButtonEnum.HK_CALLBACK](values)
                 values[hkButtonEnum.HK_PRESSED_SINCE] = 0
                 values[hkButtonEnum.HK_STATE_PRESSED] = False
@@ -79,10 +87,13 @@ class hkButtonHandler:
 
                 # if dim is allowed and dim threshold has been reached, reduce output by rate and callback
                 if values[hkButtonEnum.HK_DIM] and \
-                        values[hkButtonEnum.HK_PRESSED_SINCE] > self.__HK_BUTTON_DIM_THRESHOLD and \
-                        0 < values[hkButtonEnum.HK_OUTPUT_SET] < 100:
+                        values[hkButtonEnum.HK_PRESSED_SINCE] > self.__HK_BUTTON_DIM_THRESHOLD:
 
-                    values[hkButtonEnum.HK_OUTPUT_SET] -= self.__HK_DIM_RATE_PER_CYCLE
+                    if values[hkButtonEnum.HK_DIM_DOWN] and values[hkButtonEnum.HK_OUTPUT_SET] > 0:
+                        values[hkButtonEnum.HK_OUTPUT_SET] -= self.__HK_DIM_RATE_PER_CYCLE
+                    elif values[hkButtonEnum.HK_OUTPUT_SET] < 100:
+                        values[hkButtonEnum.HK_OUTPUT_SET] += self.__HK_DIM_RATE_PER_CYCLE
+
                     values[hkButtonEnum.HK_CALLBACK](values)
 
                 values[hkButtonEnum.HK_PRESSED_SINCE] += 1
