@@ -1,0 +1,10 @@
+// rule for button 1
+// it will listen for changes on the declared PiButton1 (in orangepi.items)
+// and will send it straight to the declared hue lamp
+
+rule button1
+when
+    Item PiButton1 changed
+then
+    sendCommand(Hue_Item, PiButton1.state.toString);
+end
