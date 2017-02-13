@@ -1,0 +1,2 @@
+# gets the value of the diming from the mqtt broker (in my case mosquitto)
+Number PiButton1 "Button1 on Pi [%d]" {mqtt="<[broker:cmnd/pi/button1:state:default]"}	
