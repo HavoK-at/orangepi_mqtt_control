@@ -25,7 +25,8 @@ class hkButtonHandler:
     # dict to store the gpio pins with params and the callback function
     __HK_BUTTON_PRESSED = 0             # button pulls to ground
     __HK_BUTTON_DIM_THRESHOLD = 5     # in cycles
-    __HK_DIM_RATE_PER_CYCLE = 3
+    __HK_DIM_RATE_PER_CYCLE = 5         # change of output per cycle
+    __HK_DIM_RATE_CYCLES = 4            # amount of cycles till change
     __HK_PIN_LIST = {}
 
     def __init__(self, input_dict):
@@ -89,8 +90,12 @@ class hkButtonHandler:
             elif got_pressed and was_pressed:
 
                 # if dim is allowed and dim threshold has been reached, reduce output by rate and callback
+                #
+
+                pressed_since = values[hkButtonEnum.HK_PRESSED_SINCE]
                 if values[hkButtonEnum.HK_DIM] and \
-                        values[hkButtonEnum.HK_PRESSED_SINCE] > self.__HK_BUTTON_DIM_THRESHOLD:
+                        pressed_since > self.__HK_BUTTON_DIM_THRESHOLD and \
+                        ((pressed_since - self.__HK_BUTTON_DIM_THRESHOLD) % self.__HK_DIM_RATE_CYCLES) == 0:
 
                     if values[hkButtonEnum.HK_DIM_DOWN] and values[hkButtonEnum.HK_OUTPUT_SET] > 0:
                         values[hkButtonEnum.HK_OUTPUT_SET] -= self.__HK_DIM_RATE_PER_CYCLE
