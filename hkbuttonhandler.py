@@ -75,7 +75,7 @@ class hkButtonHandler:
                 elif not was_long_press:
                     values[hkButtonEnum.HK_OUTPUT_SET] = 0
 
-                if values[hkButtonEnum.HK_OUTPUT_SET] == 0:
+                if values[hkButtonEnum.HK_OUTPUT_SET] <= (0 + self.__HK_DIM_RATE_PER_CYCLE):
                     values[hkButtonEnum.HK_DIM_DOWN] = False
                 else:
                     values[hkButtonEnum.HK_DIM_DOWN] = True
@@ -97,7 +97,8 @@ class hkButtonHandler:
                         pressed_since > self.__HK_BUTTON_DIM_THRESHOLD and \
                         ((pressed_since - self.__HK_BUTTON_DIM_THRESHOLD) % self.__HK_DIM_RATE_CYCLES) == 0:
 
-                    if values[hkButtonEnum.HK_DIM_DOWN] and values[hkButtonEnum.HK_OUTPUT_SET] > 0:
+                    if values[hkButtonEnum.HK_DIM_DOWN] and \
+                                    values[hkButtonEnum.HK_OUTPUT_SET] > 0 + self.__HK_DIM_RATE_PER_CYCLE:
                         values[hkButtonEnum.HK_OUTPUT_SET] -= self.__HK_DIM_RATE_PER_CYCLE
                     elif (not values[hkButtonEnum.HK_DIM_DOWN]) and values[hkButtonEnum.HK_OUTPUT_SET] < 100:
                         values[hkButtonEnum.HK_OUTPUT_SET] += self.__HK_DIM_RATE_PER_CYCLE
