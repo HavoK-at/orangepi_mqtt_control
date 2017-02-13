@@ -22,5 +22,5 @@ https://forum.armbian.com/index.php/topic/3084-orange-pi-zero-python-gpio-librar
 
 Thanks to martinayotte for the information on how to modify the library for the OPi Zero!  
 
-Linux Daemon with python: 
+Linux Daemon with python:  
 https://linuxfollies.blogspot.co.at/2016/11/linux-daemon-using-python-daemon-with.html
